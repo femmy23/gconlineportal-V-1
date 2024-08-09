@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { css, styled } from "styled-components";
 import toast from "react-hot-toast";
 import Footer from "../../components/Footer";
 import AuthHeader from "../../components/AuthHeader";
+import { useNavigate } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { changePassword, getSession } from "../services/apiauth";
+import { useSearchParams } from "react-router-dom";
 
 const Body = styled.body`
   height: 70vh;
@@ -83,11 +87,50 @@ const Button = styled.button`
 `;
 
 export default function ChangePassword() {
+  const [newPassword, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+
+  const {
+    isLoading,
+    data: session,
+    error,
+  } = useQuery({
+    queryKey: ["session"],
+    queryFn: getSession,
+  });
+
+  const { mutate, isLoading: isChanging } = useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      toast.success("Password changed Successfully");
+      navigate("/login");
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
+    const access_token = session.access_token;
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    if (!access_token) {
+      toast.error("Access token is missing.");
+      return;
+    }
+
+    mutate({ access_token, newPassword });
+  };
+
   return (
     <>
       <AuthHeader />
       <Body>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleResetPassword}>
           <H2>Create New Password</H2>
 
           <InputGroup>
@@ -98,6 +141,8 @@ export default function ChangePassword() {
               type="password"
               name="password"
               placeholder="*******"
+              value={newPassword}
+              onChange={(e) => setPassword(e.target.value)}
               min={6}
               required
             />
@@ -110,6 +155,8 @@ export default function ChangePassword() {
             <Input
               type="password"
               name="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="*******"
               required
             />

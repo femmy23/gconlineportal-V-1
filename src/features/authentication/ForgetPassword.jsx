@@ -6,8 +6,11 @@ import { toast } from "react-hot-toast";
 import { supabase } from "../services/supabase";
 import MoveBack from "../../components/MoveBack";
 import { FaArrowLeft } from "react-icons/fa";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { forgetPassword } from "../services/apiauth";
 
-const Body = styled.body`
+const Body = styled.div`
   height: 60vh;
   background-color: #a0cee8;
   display: flex;
@@ -85,23 +88,45 @@ const Button = styled.button`
   margin-top: 1.5rem;
 `;
 
-export default function ForgetPassword() {
+export default function ForgetPassword(e) {
+  const [email, setEmail] = useState("");
+
+  const { mutate, isLoading: isSending } = useMutation({
+    mutationFn: forgetPassword,
+    onSuccess: () => {
+      toast.success("Password Reset Link Sent");
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    mutate(email);
+  }
+
   return (
     <>
       <AuthHeader />
       <MoveBack />
       <Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <H2>Reset Password</H2>
           <InputGroup>
             <Label name="email">
               Email:<Span>*</Span>
             </Label>
-            <Input type="email" name="email" placeholder="dejzzy@info.uk" />
+            <Input
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="dejzzy@info.uk"
+            />
           </InputGroup>
 
           <Center>
-            <Button>forget</Button>
+            <Button>Send Link</Button>
           </Center>
         </Form>
       </Body>

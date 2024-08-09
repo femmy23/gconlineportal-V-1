@@ -33,6 +33,7 @@ const Button = styled.button`
 
 export default function Home() {
   let total = 0;
+
   const {
     isLoading,
     data: account,

@@ -197,3 +197,23 @@ export async function uploadBankImage(file) {
     return;
   }
 }
+
+//Send Forget Password Link
+export const forgetPassword = async (email) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "http://pgonlineportal.com/changePassword",
+  });
+
+  if (error) throw error;
+};
+
+//Change Password
+export const changePassword = async ({ access_token, newPassword }) => {
+  console.log({ access_token, newPassword });
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) throw error;
+};
