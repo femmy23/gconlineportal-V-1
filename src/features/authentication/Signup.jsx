@@ -88,6 +88,13 @@ const Button = styled.button`
   padding: 0.6rem 2rem;
   cursor: pointer;
   margin: 1rem;
+  transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
   ${(props) =>
     props.type === "show" &&
     css`
@@ -102,10 +109,33 @@ const Button = styled.button`
       margin: 5px;
     `}
 `;
+const Hide = styled.a`
+  background-color: #5e5ef0;
+  border-radius: 3px;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 10px;
+  padding: 5px;
+  cursor: pointer;
+  margin: 5px;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
+`;
 
 export default function Signup() {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault();
+    setPasswordVisible(!passwordVisible);
+  };
 
   const { mutate, isLoading } = useMutation({
     mutationFn: signup,
@@ -182,10 +212,12 @@ export default function Signup() {
             <Label>
               Password:<Span>*</Span>
             </Label>
-
+            <Button type="show" onClick={togglePasswordVisibility}>
+              {passwordVisible ? "Hide password" : "Show password"}
+            </Button>
             <Input
               id="password"
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               placeholder="*******"
               {...register("password")}
               required

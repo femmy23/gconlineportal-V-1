@@ -22,6 +22,13 @@ const Button = styled.button`
   padding: 0.6rem 1.5rem;
   cursor: pointer;
   margin: 1rem;
+  transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
 `;
 
 export default function MoveBack() {

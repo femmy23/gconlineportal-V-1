@@ -1,5 +1,5 @@
 import React from "react";
-import { FaExclamation, FaStop } from "react-icons/fa";
+import { FaExclamation } from "react-icons/fa";
 import { styled } from "styled-components";
 import Footer from "../components/Footer";
 import Header from "../components/Header";

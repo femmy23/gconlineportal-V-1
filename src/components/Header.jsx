@@ -101,9 +101,12 @@ const A = styled.a`
       border-radius: 5px;
       color: #fff;
       background-color: #5e5ef0;
+      transition: active 0.5s linear;
       &:hover {
         background-color: #5151d1;
-        color: #fff;
+      }
+      &:active {
+        transform: scale(0.88);
       }
       @media screen and (max-width: 900px) {
         display: block;

@@ -5,15 +5,8 @@ import { toast } from "react-hot-toast";
 import { styled } from "styled-components";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import {
-  fetchProfile,
-  Logger,
-  updateAccount,
-  uploadBankImage,
-} from "../features/services/apiauth";
-import PageNotFound from "../routes/PageNotFound";
+import { updateAccount, uploadBankImage } from "../features/services/apiauth";
 import MoveBack from "./MoveBack";
-import Spinner from "./Spinner";
 
 const Body = styled.body`
   display: flex;
@@ -133,6 +126,12 @@ const Button = styled.button`
   padding: 0.6rem 1.5rem;
   cursor: pointer;
   margin: 1rem 3.5rem;
+   transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
 `;
 
 export default function PostForm({ account }) {

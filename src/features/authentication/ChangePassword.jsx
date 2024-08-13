@@ -84,6 +84,12 @@ const Button = styled.button`
   padding: 0.6rem 2rem;
   cursor: pointer;
   margin-top: 1.5rem;
+   transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
 `;
 
 export default function ChangePassword() {
@@ -163,7 +169,7 @@ export default function ChangePassword() {
           </InputGroup>
 
           <Center>
-            <Button> ChangePassword</Button>
+            <Button> Change Password</Button>
           </Center>
         </Form>
       </Body>

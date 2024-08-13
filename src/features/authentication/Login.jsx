@@ -92,24 +92,43 @@ const Button = styled.button`
   font-size: 1rem;
   padding: 0.6rem 2rem;
   cursor: pointer;
-  ${(props) =>
-    props.type === "show" &&
-    css`
-      /* display: flex; */
-      border-radius: 3px;
-      color: #fff;
-      outline: none;
-      border: none;
-      font-size: 10px;
-      padding: 5px;
-      cursor: pointer;
-      margin: 5px;
-    `}
+  transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
+
+  /* ${(props) => props.type === "show" && css``} */
+`;
+const Hide = styled.a`
+  background-color: #5e5ef0;
+  border-radius: 3px;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 10px;
+  padding: 5px;
+  cursor: pointer;
+  margin: 5px;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
 `;
 
 export default function Login() {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault();
+    setPasswordVisible(!passwordVisible);
+  };
 
   const { mutate, isLoading } = useMutation({
     mutationFn: login,
@@ -159,9 +178,11 @@ export default function Login() {
             <Label name="password">
               Password:<Span>*</Span>
             </Label>
-
+            <Hide type="show" onClick={togglePasswordVisibility}>
+              {passwordVisible ? "Hide password" : "Show password"}
+            </Hide>
             <Input
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               id="password"
               {...register("password")}
               placeholder="*******"

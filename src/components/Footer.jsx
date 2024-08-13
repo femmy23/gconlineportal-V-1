@@ -106,7 +106,7 @@ export default function Footer() {
         </Details>
       </FooterContainer>
       <hr />
-      <Copyright>Copyright © 2024 gconlineportal</Copyright>
+      <Copyright>Copyright © 2024 pgonlineportal</Copyright>
     </FooterSection>
   );
 }

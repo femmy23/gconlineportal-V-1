@@ -86,6 +86,13 @@ const Button = styled.button`
   cursor: pointer;
   margin: 1rem;
   margin-top: 1.5rem;
+  transition: active 0.5s linear;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
 `;
 
 export default function ForgetPassword(e) {
