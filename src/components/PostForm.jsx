@@ -126,12 +126,13 @@ const Button = styled.button`
   padding: 0.6rem 1.5rem;
   cursor: pointer;
   margin: 1rem 3.5rem;
-   transition: active 0.5s linear;
+  transition: active 0.5s linear;
   &:hover {
     background-color: #5151d1;
   }
   &:active {
     transform: scale(0.88);
+  }
 `;
 
 export default function PostForm({ account }) {
@@ -163,11 +164,13 @@ export default function PostForm({ account }) {
     let bondPayment = Number(
       Number(data.investment) + Number(totalInterest)
     ).toFixed(2);
+    let monthlyInterest = Number(bondPayment / 12).toFixed(2);
 
     const bankImageUrl = await uploadBankImage(file);
 
     const newAccount = await {
       ...data,
+      monthlyInterest,
       bondPayment,
       totalInterest,
       bankImageUrl,

@@ -141,7 +141,6 @@ export default function Signup() {
     mutationFn: signup,
     onSuccess: () => {
       toast.success("Account successfully created!");
-      toast.success("verify account from your email address!");
       reset();
       navigate("/login");
     },
@@ -161,7 +160,7 @@ export default function Signup() {
       <AuthHeader />
       <Body>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <H2>Login to PIMCO</H2>
+          <H2>Signup to PIMCO</H2>
           <P>
             Already have an account?
             <Link className="link" to="/login">

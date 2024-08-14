@@ -1,10 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { toast } from "react-hot-toast";
+import { FaTrash, FaTrashAlt } from "react-icons/fa";
 import { styled } from "styled-components";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Spinner from "../components/Spinner";
-import { fetchAccount } from "../features/services/apiauth";
+import { deleteAccount, fetchAccount } from "../features/services/apiauth";
 
 const H1 = styled.h1`
   text-align: center;
@@ -42,6 +44,25 @@ const Button = styled.button`
   cursor: pointer;
   background-color: #5e5ef0;
 `;
+const Delete = styled.button`
+  /* color: #000; */
+  outline: none;
+  font-size: 1rem;
+  padding: 0.2rem 0.5rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.1s ease-in-out;
+  background-color: #5e5ef0;
+  color: #fff;
+
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
+`;
 const Table = styled.table`
   margin: 0 auto;
   text-align: center;
@@ -52,27 +73,38 @@ const Table = styled.table`
 const Tr = styled.tr`
   text-align: center;
   border: 1px solid #ccc;
-  padding: 0.5rem;
+  padding: 0.4rem;
 `;
 const Th = styled.th`
   text-align: center;
   border: 1px solid #ccc;
-  padding: 0.5rem;
+  padding: 0.4rem;
 `;
 const Td = styled.td`
   text-align: center;
   border: 1px solid #ccc;
-  padding: 0.5rem;
+  padding: 0.4rem;
 `;
 const Tf = styled.tfoot`
   text-align: center;
   border: none;
-  padding: 0.5rem;
+  padding: 0.4rem;
   margin: ;
 `;
 
 export default function Account() {
   let total = 0;
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading: isChanging } = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => {
+      toast.success("Deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["account"] });
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   const {
     isLoading,
     data: account,
@@ -89,6 +121,11 @@ export default function Account() {
       ?.map((acc) => acc.bondPayment)
       ?.reduce((ac, cur) => Number(ac) + Number(cur))
       .toLocaleString();
+  }
+
+  function handleDelete(i) {
+    confirm("Are you sure you want to delete");
+    mutate(i);
   }
 
   return (
@@ -123,8 +160,10 @@ export default function Account() {
             <Th>Bond Number</Th>
             <Th>Investment</Th>
             <Th>Annual Return</Th>
+            <Th>Monthly Interest </Th>
             <Th>Total Interest</Th>
             <Th>Bond Payments</Th>
+            <Th>Action</Th>
           </Tr>
           {account?.map((acc, i) => {
             return (
@@ -134,8 +173,14 @@ export default function Account() {
                 <Td>{acc.bondNumber}</Td>
                 <Td>€{acc.investment}</Td>
                 <Td>{acc.annualReturn}%</Td>
+                <Td>€{acc.monthlyInterest}</Td>
                 <Td>€{acc.totalInterest}</Td>
                 <Td>€{acc.bondPayment}</Td>
+                <Td>
+                  <Delete onClick={() => handleDelete(i)}>
+                    <FaTrashAlt />
+                  </Delete>
+                </Td>
               </Tr>
             );
           })}
@@ -146,10 +191,10 @@ export default function Account() {
             <Td></Td>
             <Td></Td>
             <Td></Td>
+            <Td></Td>
             <Th>€{total}</Th>
           </Tr>
         </Table>
-
         <Center>
           <Button>View Itemised Payments</Button>
           <Button>View Bonds Total</Button>

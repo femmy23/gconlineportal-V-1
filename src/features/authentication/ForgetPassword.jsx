@@ -102,13 +102,13 @@ export default function ForgetPassword(e) {
     mutationFn: forgetPassword,
     onSuccess: () => {
       toast.success("Password Reset Link Sent");
+      setEmail("");
     },
     onError: (err) => toast.error(err.message),
   });
 
   function handleSubmit(e) {
     e.preventDefault();
-
     mutate(email);
   }
 
@@ -133,7 +133,9 @@ export default function ForgetPassword(e) {
           </InputGroup>
 
           <Center>
-            <Button>Send Link</Button>
+            <Button disabled={isSending}>
+              {isSending ? "Sending..." : "Send Link"}
+            </Button>
           </Center>
         </Form>
       </Body>

@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import MoveBack from "../../components/MoveBack";
 import Spinner from "../../components/Spinner";
-import { fetchProfile, updateUser, uploadAvatar } from "../services/apiauth";
+import {
+  fetchProfile,
+  Logout,
+  updateUser,
+  uploadAvatar,
+} from "../services/apiauth";
 
 const Body = styled.body`
   height: 100vh;
@@ -159,6 +164,7 @@ const Avatar = styled.img`
 export default function User() {
   const [avatar_url, setAvatarUrl] = useState(null);
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
   const handleFile = (e) => {
     console.log(e.target.files[0]);
@@ -192,6 +198,20 @@ export default function User() {
     mutate(data);
   };
 
+  const { mutate: mutateLogout, isLoading: isloggingOut } = useMutation({
+    mutationFn: Logout,
+    onSuccess: () => {
+      toast.success("Logged out Successfully");
+      navigate("/login");
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const handleLogout = () => {
+    confirm("Are you sure you want to Logout");
+    mutateLogout();
+  };
+
   return (
     <>
       <Header />
@@ -208,11 +228,13 @@ export default function User() {
               <A href="#"> View Profile</A>
             </First>
             <Options className="options">
-              <Button>Delete Account</Button>
-              <Link to="/forgetPassword">
-                <Button>Change Password</Button>
-              </Link>
-              <Button>Logout</Button>
+              <Button onClick={() => toast.error("Not Authorized")}>
+                Delete Account
+              </Button>
+              <Button onClick={() => toast.error("Email not Verified")}>
+                Change Password
+              </Button>
+              <Button onClick={handleLogout}>Logout</Button>
             </Options>
           </Left>
 

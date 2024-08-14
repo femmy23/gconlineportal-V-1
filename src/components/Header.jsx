@@ -1,12 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { styled, css } from "styled-components";
-import { fetchProfile, logout } from "../features/services/apiauth";
-import { supabase } from "../features/services/supabase";
+import { fetchProfile, Logout } from "../features/services/apiauth";
 import DropDown from "./DropDown";
 import { MenuItems } from "./MenuItems";
 import Spinner from "./Spinner";
@@ -137,17 +136,18 @@ export default function Header() {
   const [dropdown, setDropdown] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw new Error("Error Signing Out" + error.message);
-      }
-      toast.success("User Signed Out Successfully");
+  const { mutate, isLoading: isloggingOut } = useMutation({
+    mutationFn: Logout,
+    onSuccess: () => {
+      toast.success("Logged out Successfully");
       navigate("/login");
-    } catch (error) {
-      toast.error(error.message);
-    }
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const handleLogout = () => {
+    confirm("Are you sure you want to Logout");
+    mutate();
   };
 
   const onToggle = function () {

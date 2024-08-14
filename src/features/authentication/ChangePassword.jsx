@@ -84,12 +84,13 @@ const Button = styled.button`
   padding: 0.6rem 2rem;
   cursor: pointer;
   margin-top: 1.5rem;
-   transition: active 0.5s linear;
+  transition: active 0.5s linear;
   &:hover {
     background-color: #5151d1;
   }
   &:active {
     transform: scale(0.88);
+  }
 `;
 
 export default function ChangePassword() {

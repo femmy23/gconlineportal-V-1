@@ -37,17 +37,6 @@ export const getSession = async () => {
   }
 };
 
-//logout
-export const logout = async () => {
-  const navigate = useNavigate();
-
-  const { error } = await supabase.auth.signOut();
-  if (error) toast.error("User not Signed Out");
-
-  toast.success("User Signed Out Successfully");
-  navigate("/login");
-};
-
 //Current User
 export const getCurrentUser = async () => {
   const {
@@ -81,8 +70,6 @@ export const updateUser = async ({ fullname, avatar, email, updated_at }) => {
 
 //Update Account
 export const updateAccount = async ({ username, newAccount }) => {
-  const userId = await getCurrentUser();
-
   let { data, error } = await supabase
     .from("profiles")
     .select()
@@ -137,6 +124,28 @@ export const fetchAccount = async () => {
     toast.error("Error fetching account", error.message);
   }
   return data.account;
+};
+
+//Delete Account
+export const deleteAccount = async (i) => {
+  const account = await fetchAccount();
+  const userId = await getCurrentUser();
+
+  const rest = account?.filter((_, index) => index !== i);
+
+  let { error } = await supabase
+    .from("profiles")
+    .update({ account: rest })
+    .eq("id", userId);
+
+  if (error) throw error;
+};
+
+// Logout Users
+export const Logout = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) throw error;
 };
 
 //upload Avatar
