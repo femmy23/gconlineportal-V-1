@@ -208,7 +208,8 @@ export default function User() {
   });
 
   const handleLogout = () => {
-    confirm("Are you sure you want to Logout");
+    const check = confirm("Are you sure you want to Logout");
+    if (!check) return;
     mutateLogout();
   };
 

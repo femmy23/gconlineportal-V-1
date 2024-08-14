@@ -130,7 +130,8 @@ export default function Bonds() {
       .toLocaleString();
   }
   function handleDelete(i) {
-    confirm("Are you sure you want to delete");
+    const check = confirm("Are you sure you want to delete");
+    if (!check) return;
     mutate(i);
   }
 
