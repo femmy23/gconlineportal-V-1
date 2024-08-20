@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { css, styled } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../services/supabase";
 import toast from "react-hot-toast";
 import Spinner from "../../components/Spinner";
 import Footer from "../../components/Footer";
@@ -10,6 +9,7 @@ import AuthHeader from "../../components/AuthHeader";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { login } from "../services/apiauth";
+import Home from "../../routes/Home";
 
 const Body = styled.body`
   height: 80vh;

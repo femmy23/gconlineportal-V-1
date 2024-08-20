@@ -15,7 +15,7 @@ const H1 = styled.h1`
 `;
 const H2 = styled.h2`
   font-weight: 600;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
 `;
 const Acc = styled.div`
   margin: 3rem;
@@ -133,7 +133,7 @@ export default function Account() {
     <>
       <Header />
       <Body>
-        <H1>My Account</H1>
+        <H1>MY ACCOUNT</H1>
 
         {account?.map((acc, i) => {
           return (
@@ -143,7 +143,7 @@ export default function Account() {
               <ParaText>
                 Start Date: {acc.startDate}
                 <br />
-                Maturity Date:{acc.maturityDate}
+                Maturity Date: {acc.maturityDate}
                 <br />
                 Bond Number: {acc.bondNumber}
                 <br />
@@ -164,7 +164,7 @@ export default function Account() {
             <Th>Monthly Interest </Th>
             <Th>Total Interest</Th>
             <Th>Bond Payments</Th>
-            <Th>Action</Th>
+            {/* <Th>Action</Th> */}
           </Tr>
           {account?.map((acc, i) => {
             return (
@@ -177,11 +177,11 @@ export default function Account() {
                 <Td>€{acc.monthlyInterest}</Td>
                 <Td>€{acc.totalInterest}</Td>
                 <Td>€{acc.bondPayment}</Td>
-                <Td>
+                {/* <Td>
                   <Delete onClick={() => handleDelete(i)}>
                     <FaTrashAlt />
                   </Delete>
-                </Td>
+                </Td> */}
               </Tr>
             );
           })}

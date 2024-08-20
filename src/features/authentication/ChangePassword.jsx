@@ -92,20 +92,34 @@ const Button = styled.button`
     transform: scale(0.88);
   }
 `;
+const Hide = styled.a`
+  background-color: #5e5ef0;
+  border-radius: 3px;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 10px;
+  padding: 5px;
+  cursor: pointer;
+  margin: 0 auto;
+  &:hover {
+    background-color: #5151d1;
+  }
+  &:active {
+    transform: scale(0.88);
+  }
+`;
 
 export default function ChangePassword() {
   const [newPassword, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const {
-    isLoading,
-    data: session,
-    error,
-  } = useQuery({
-    queryKey: ["session"],
-    queryFn: getSession,
-  });
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault();
+    setPasswordVisible(!passwordVisible);
+  };
 
   const { mutate, isLoading: isChanging } = useMutation({
     mutationFn: changePassword,
@@ -119,18 +133,12 @@ export default function ChangePassword() {
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
-    const access_token = session.access_token;
-
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
     }
-    if (!access_token) {
-      toast.error("Access token is missing.");
-      return;
-    }
 
-    mutate({ access_token, newPassword });
+    mutate(newPassword);
   };
 
   return (
@@ -144,8 +152,9 @@ export default function ChangePassword() {
             <Label name="password">
               Password:<Span>*</Span>
             </Label>
+
             <Input
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               name="password"
               placeholder="*******"
               value={newPassword}
@@ -159,8 +168,11 @@ export default function ChangePassword() {
             <Label name="password">
               Confirm Password:<Span>*</Span>
             </Label>
+            <Hide type="show" onClick={togglePasswordVisibility}>
+              {passwordVisible ? "Hide password" : "Show password"}
+            </Hide>
             <Input
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               name="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

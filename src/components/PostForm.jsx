@@ -164,7 +164,7 @@ export default function PostForm({ account }) {
     let bondPayment = Number(
       Number(data.investment) + Number(totalInterest)
     ).toFixed(2);
-    let monthlyInterest = Number(bondPayment / 12).toFixed(2);
+    let monthlyInterest = Number(totalInterest / 12).toFixed(2);
 
     const bankImageUrl = await uploadBankImage(file);
 
@@ -284,7 +284,8 @@ export default function PostForm({ account }) {
                 Investment:<Span>*</Span>
               </Label>
               <Input
-                type="text"
+                type="number"
+                step="0.01"
                 id="investment"
                 {...register("investment")}
                 required
@@ -298,7 +299,8 @@ export default function PostForm({ account }) {
                 Annual Return:<Span>*</Span>
               </Label>
               <Input
-                type="text"
+                type="number"
+                step="0.01"
                 id="annualReturn"
                 {...register("annualReturn")}
                 required

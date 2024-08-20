@@ -165,14 +165,28 @@ export default function User() {
   const [avatar_url, setAvatarUrl] = useState(null);
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const queryClient = useQueryClient();
 
   const handleFile = (e) => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
 
-  const { register, handleSubmit } = useForm();
-  const queryClient = useQueryClient();
+  const { mutate: mutateLogout, isLoading: isloggingOut } = useMutation({
+    mutationFn: Logout,
+    onSuccess: () => {
+      toast.success("Logged out Successfully");
+      navigate("/login");
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const handleLogout = () => {
+    const check = confirm("Are you sure you want to Logout");
+    if (!check) return;
+    mutateLogout();
+  };
 
   const { mutate, isLoading: isCreating } = useMutation({
     mutationFn: updateUser,
@@ -198,21 +212,6 @@ export default function User() {
     mutate(data);
   };
 
-  const { mutate: mutateLogout, isLoading: isloggingOut } = useMutation({
-    mutationFn: Logout,
-    onSuccess: () => {
-      toast.success("Logged out Successfully");
-      navigate("/login");
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const handleLogout = () => {
-    const check = confirm("Are you sure you want to Logout");
-    if (!check) return;
-    mutateLogout();
-  };
-
   return (
     <>
       <Header />
@@ -232,9 +231,9 @@ export default function User() {
               <Button onClick={() => toast.error("Not Authorized")}>
                 Delete Account
               </Button>
-              <Button onClick={() => toast.error("Email not Verified")}>
-                Change Password
-              </Button>
+              <Link to="/changePassword">
+                <Button>Change Password</Button>
+              </Link>
               <Button onClick={handleLogout}>Logout</Button>
             </Options>
           </Left>

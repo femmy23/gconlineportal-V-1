@@ -8,17 +8,21 @@ import Home from "./routes/Home";
 import Account from "./routes/Account";
 import PageNotFound from "./routes/PageNotFound";
 import User from "./routes/User";
-import Login from "./features/authentication/Login";
-import Signup from "./features/authentication/Signup";
-import ProtectedRoute from "./features/authentication/ProtectedRoute";
-import AppLayout from "./components/AppLayout";
 import Posts from "./routes/Posts";
-import WithdrawDeposit from "./routes/WithdrawDeposit";
+import History from "./routes/History";
 import Bonds from "./routes/Bonds";
 import FixedTermDeposit from "./routes/FixedTermDeposit";
-import "./App.css";
+import WithdrawDeposit from "./routes/WithdrawDeposit";
+
+import AppLayout from "./components/AppLayout";
+
+import Login from "./features/authentication/Login";
+import Signup from "./features/authentication/Signup";
 import ChangePassword from "./features/authentication/ChangePassword";
+import ProtectedRoute from "./features/authentication/ProtectedRoute";
 import ForgetPassword from "./features/authentication/ForgetPassword";
+
+import "./App.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,11 +52,13 @@ export default function App() {
             <Route path="/WithdrawDeposit" element={<WithdrawDeposit />} />
             <Route path="/user" element={<User />} />
             <Route path="/post" element={<Posts />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/history" element={<History />} />
             <Route path="*" element={<PageNotFound />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
           </Route>
+
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/changePassword" element={<ChangePassword />} />
           <Route path="/forgetPassword" element={<ForgetPassword />} />
         </Routes>
       </BrowserRouter>

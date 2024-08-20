@@ -56,7 +56,7 @@ export const getCurrentUser = async () => {
   }
 };
 
-//Update User
+//Update Profile
 export const updateUser = async ({ fullname, avatar, email, updated_at }) => {
   const userId = await getCurrentUser();
 
@@ -217,8 +217,8 @@ export const forgetPassword = async (email) => {
 };
 
 //Change Password
-export const changePassword = async ({ access_token, newPassword }) => {
-  console.log({ access_token, newPassword });
+export const changePassword = async (newPassword) => {
+  console.log(newPassword);
 
   const { error } = await supabase.auth.updateUser({
     password: newPassword,

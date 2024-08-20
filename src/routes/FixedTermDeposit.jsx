@@ -15,9 +15,8 @@ const H1 = styled.h1`
   margin-top: 1rem;
 `;
 const H2 = styled.h2`
-  font-size: 1.5rem;
   font-weight: 600;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
 `;
 const H5 = styled.h5`
   text-align: center;
@@ -142,17 +141,17 @@ export default function FixedTermDeposit() {
       <Header />
       <MoveBack />
       <Body>
-        <H1>Fixed Term Deposit</H1>
+        <H1>FIXED TERM DEPOSIT</H1>
 
         {account?.map((acc, i) => {
           return (
             <Acc key={i}>
-              <H2>{acc.bankname}</H2>
               <Img src={acc.bankImageUrl} alt={`${acc.bankname} image`} />
+              <H2>{acc.bankname}</H2>
               <ParaText>
                 Start Date: {acc.startDate}
                 <br />
-                Maturity Date:{acc.maturityDate}
+                Maturity Date: {acc.maturityDate}
                 <br />
                 Bond Number: {acc.bondNumber}
                 <br />
@@ -173,7 +172,7 @@ export default function FixedTermDeposit() {
             <Th>Monthly Interest </Th>
             <Th>Total Interest</Th>
             <Th>Bond Payments</Th>
-            <Th>Action</Th>
+            {/* <Th>Action</Th> */}
           </Tr>
           {account?.map((acc, i) => {
             return (
@@ -183,14 +182,14 @@ export default function FixedTermDeposit() {
                 <Td>{acc.bondNumber}</Td>
                 <Td>€{acc.investment}</Td>
                 <Td>{acc.annualReturn}%</Td>
-                <Td>€{acc.monthlyInterest}%</Td>
+                <Td>€{acc.monthlyInterest}</Td>
                 <Td>€{acc.totalInterest}</Td>
                 <Td>€{acc.bondPayment}</Td>
-                <Td>
+                {/* <Td>
                   <Delete onClick={() => handleDelete(i)}>
                     <FaTrashAlt />
                   </Delete>
-                </Td>
+                </Td> */}
               </Tr>
             );
           })}

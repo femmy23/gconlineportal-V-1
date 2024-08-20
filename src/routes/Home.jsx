@@ -45,7 +45,7 @@ export default function Home() {
 
   if (account?.length !== 0) {
     total = account
-      ?.map((acc) => acc.bondPayment)
+      ?.map((acc) => acc.investment)
       ?.reduce((ac, cur) => Number(ac) + Number(cur))
       .toLocaleString();
   }
