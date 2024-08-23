@@ -1,7 +1,7 @@
 import React from "react";
 import { css, styled } from "styled-components";
-import AuthHeader from "../../components/AuthHeader";
-import Footer from "../../components/Footer";
+import AuthHeader from "../../UI/AuthHeader";
+import Footer from "../../UI/Footer";
 import { toast } from "react-hot-toast";
 import { supabase } from "../services/supabase";
 import MoveBack from "../../components/MoveBack";

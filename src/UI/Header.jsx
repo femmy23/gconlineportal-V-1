@@ -198,11 +198,18 @@ export default function Header() {
             );
           })}
           {data.is_admin ? (
-            <Li>
-              <Link to="/post" style={{ textDecoration: "none" }}>
-                <A type="nav-links">Post</A>
-              </Link>
-            </Li>
+            <>
+              <Li>
+                <Link to="/post" style={{ textDecoration: "none" }}>
+                  <A type="nav-links">Post</A>
+                </Link>
+              </Li>
+              <Li>
+                <Link to="/history" style={{ textDecoration: "none" }}>
+                  <A type="nav-links">History</A>
+                </Link>
+              </Li>
+            </>
           ) : (
             ""
           )}

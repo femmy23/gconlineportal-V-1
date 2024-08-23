@@ -5,16 +5,16 @@ import { toast } from "react-hot-toast";
 
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import MoveBack from "../../components/MoveBack";
-import Spinner from "../../components/Spinner";
+import Footer from "../UI/Footer";
+import Header from "../UI/Header";
+import MoveBack from "./MoveBack";
+import Spinner from "../UI/Spinner";
 import {
   fetchProfile,
   Logout,
   updateUser,
   uploadAvatar,
-} from "../services/apiauth";
+} from "../features/services/apiauth";
 
 const Body = styled.body`
   height: 100vh;

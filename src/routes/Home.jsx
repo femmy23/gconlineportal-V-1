@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../UI/Footer";
+import Header from "../UI/Header";
 import { fetchAccount } from "../features/services/apiauth";
 
 const Views = styled.div`

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { styled } from "styled-components";
-import Spinner from "../../components/Spinner";
+import Spinner from "../../UI/Spinner";
 import { getSession } from "../services/apiauth";
 import Login from "./Login";
 

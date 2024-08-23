@@ -69,7 +69,18 @@ export const updateUser = async ({ fullname, avatar, email, updated_at }) => {
 };
 
 //Update Account
-export const updateAccount = async ({ username, newAccount }) => {
+export const updateAccount = async ({ username, updatedAccounts }) => {
+  console.log(updatedAccounts);
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ account: updatedAccounts })
+    .eq("username", username);
+
+  if (error) throw error;
+};
+
+//Add to Account
+export const addAccount = async ({ username, newAccount }) => {
   let { data, error } = await supabase
     .from("profiles")
     .select()
@@ -78,13 +89,20 @@ export const updateAccount = async ({ username, newAccount }) => {
 
   let updatedInterests = [...data.account, newAccount];
   console.log(updatedInterests);
-  //
+
   let { error: updateError } = await supabase
     .from("profiles")
     .update({ account: updatedInterests })
     .eq("username", username);
-
   if (error || updateError) throw error;
+};
+
+//Fetch All Username
+export const fetchUsernames = async () => {
+  const { data, error } = await supabase.from("profiles").select("username");
+
+  if (error) throw error;
+  return data;
 };
 
 //Fetch User profile
@@ -118,6 +136,21 @@ export const fetchAccount = async () => {
     .from("profiles")
     .select()
     .eq("id", userId)
+    .single();
+
+  if (error) {
+    toast.error("Error fetching account", error.message);
+  }
+  return data.account;
+};
+// fetch Account Password
+export const fetchAccountPassword = async (username) => {
+  if (!username) return;
+  console.log(username);
+  let { data, error } = await supabase
+    .from("profiles")
+    .select()
+    .eq("username", username)
     .single();
 
   if (error) {

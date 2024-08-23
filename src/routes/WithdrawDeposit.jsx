@@ -1,8 +1,8 @@
 import React from "react";
 import { FaExclamation } from "react-icons/fa";
 import { styled } from "styled-components";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../UI/Footer";
+import Header from "../UI/Header";
 import MoveBack from "../components/MoveBack";
 
 export default function WithdrawDeposit() {

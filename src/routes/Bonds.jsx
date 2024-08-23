@@ -4,10 +4,10 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
 import { styled } from "styled-components";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../UI/Footer";
+import Header from "../UI/Header";
 import MoveBack from "../components/MoveBack";
-import Spinner from "../components/Spinner";
+import Spinner from "../UI/Spinner";
 import { deleteAccount, fetchAccount } from "../features/services/apiauth";
 const H1 = styled.h1`
   text-align: center;

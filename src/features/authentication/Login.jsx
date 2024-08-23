@@ -3,9 +3,9 @@ import { useState } from "react";
 import { css, styled } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import Spinner from "../../components/Spinner";
-import Footer from "../../components/Footer";
-import AuthHeader from "../../components/AuthHeader";
+import Spinner from "../../UI/Spinner";
+import Footer from "../../UI/Footer";
+import AuthHeader from "../../UI/AuthHeader";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { login } from "../services/apiauth";
@@ -168,6 +168,7 @@ export default function Login() {
             <Input
               type="email"
               id="email"
+              value="femmydigital@gmail.com"
               placeholder="dejzzy@info.uk"
               {...register("email")}
               required
@@ -184,6 +185,7 @@ export default function Login() {
             <Input
               type={passwordVisible ? "text" : "password"}
               id="password"
+              value="12121212"
               {...register("password")}
               placeholder="*******"
               required

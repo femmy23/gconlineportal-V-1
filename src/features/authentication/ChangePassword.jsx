@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { css, styled } from "styled-components";
 import toast from "react-hot-toast";
-import Footer from "../../components/Footer";
-import AuthHeader from "../../components/AuthHeader";
+import Footer from "../../UI/Footer";
+import AuthHeader from "../../UI/AuthHeader";
 import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { changePassword, getSession } from "../services/apiauth";

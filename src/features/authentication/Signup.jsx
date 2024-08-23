@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { css, styled } from "styled-components";
-import AuthHeader from "../../components/AuthHeader";
-import Footer from "../../components/Footer";
+import AuthHeader from "../../UI/AuthHeader";
+import Footer from "../../UI/Footer";
 import { signup } from "../services/apiauth";
 
 const Body = styled.body`

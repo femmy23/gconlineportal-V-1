@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../UI/Footer";
+import Header from "../UI/Header";
 import MoveBack from "../components/MoveBack";
 
 export default function PageNotFound() {

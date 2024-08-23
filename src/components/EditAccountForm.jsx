@@ -5,24 +5,55 @@ import { toast } from "react-hot-toast";
 import { styled } from "styled-components";
 import Footer from "../UI/Footer";
 import Header from "../UI/Header";
-import {
-  addAccount,
-  fetchUsernames,
-  uploadBankImage,
-} from "../features/services/apiauth";
+import { updateAccount, uploadBankImage } from "../features/services/apiauth";
 import MoveBack from "./MoveBack";
-import Selects from "../UI/Select";
+import { FaTimes } from "react-icons/fa";
+import { supabase } from "../features/services/supabase";
 
-const Body = styled.body`
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  transition: all 0.5s;
+`;
+const Modal = styled.div`
+  top: 15%;
+  left: 25%;
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 50%;
+  height: 70%;
+  background-color: #fff;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: all 0.5s;
+  border-radius: 20px;
+  @media screen and (max-width: 960px) {
+    width: 80%;
+    height: 55%;
+    top: 20%;
+    left: 10%;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 1rem 0rem;
+    width: 88%;
+    height: 85%;
+  }
 `;
 const Form = styled.form`
+  overflow: scroll;
   background-color: #fff;
   padding: 1rem 0.5rem;
-  width: 65%;
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -31,7 +62,6 @@ const Form = styled.form`
     height: 100%;
   }
   @media screen and (max-width: 480px) {
-    padding: 1rem 0rem;
     width: 95%;
     height: 100%;
   }
@@ -52,13 +82,20 @@ const InputGroup = styled.div`
     width: 80%;
   }
 `;
-const H1 = styled.h1`
-  color: #000;
+
+const H3 = styled.h3`
+  text-align: center;
+  color: #333;
+  margin: 0.5rem;
 `;
 const H2 = styled.h2`
+  text-align: center;
   color: #333;
-  margin: 1rem;
 `;
+const Center = styled.div`
+  text-align: center;
+`;
+
 const Span = styled.span`
   color: #e2070a;
 `;
@@ -76,6 +113,7 @@ const Label = styled.label`
     font-size: 0.8rem;
   }
 `;
+
 const Input = styled.input`
   display: block;
   background-color: #eee;
@@ -106,20 +144,12 @@ const Select = styled.select`
     background-color: #dff3ff;
   }
 `;
-const InputCheckbox = styled.div`
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
-const InputCheckboxes = styled.input`
-  display: flex;
-  background-color: #eee;
-  border: 0.5px solid #ccc;
-  width: 1rem;
-  outline: none;
-  height: 2rem;
+const Cancel = styled.button`
+  z-index: 1000;
+
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 `;
 const Button = styled.button`
   background-color: #5e5ef0;
@@ -130,7 +160,7 @@ const Button = styled.button`
   font-size: 0.9rem;
   padding: 0.6rem 1.5rem;
   cursor: pointer;
-  margin: 1rem 3.5rem;
+  margin: 1rem;
   transition: active 0.5s linear;
   &:hover {
     background-color: #5151d1;
@@ -140,32 +170,30 @@ const Button = styled.button`
   }
 `;
 
-export default function PostForm({ account }) {
+export default function EditAccountForm({
+  account: accounts,
+  user: username,
+  i,
+  closeForm,
+}) {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
-  const [username, setUsername] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
+  const editAccount = accounts[i];
 
   const handleFile = (e) => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
-  const {
-    isLoading: fetchingUsername,
-    data: usernames,
-    error: usernameError,
-  } = useQuery({
-    queryKey: ["username"],
-    queryFn: fetchUsernames,
-  });
 
-  const { mutate, isLoading: isPosting } = useMutation({
-    mutationFn: addAccount,
+  const { mutate, isLoading: isEditing } = useMutation({
+    mutationFn: updateAccount,
     onSuccess: () => {
-      toast.success("Posted Successfully");
+      toast.success("Updated Successfully");
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["account"] });
-      reset();
+      closeForm();
     },
     onError: (err) => toast.error(err.message),
   });
@@ -188,50 +216,26 @@ export default function PostForm({ account }) {
       totalInterest,
       bankImageUrl,
     };
-    mutate({ username, newAccount });
-  };
+    const current = accounts || [];
 
+    const updatedAccounts = current.map((acc, index) => {
+      if (index === i) {
+        return { ...acc, ...newAccount };
+      }
+      return acc;
+    });
+
+    mutate({ username, updatedAccounts });
+  };
   return (
     <>
-      <Header />
-      <MoveBack />
-      <Body>
-        <H1>Account Post</H1>
+      <Modal>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <H2>About Receiver</H2>
-          <FormRow>
-            <InputGroup>
-              <Label for="">
-                Username:<Span>*</Span>
-              </Label>
-              {!usernames ? (
-                ""
-              ) : (
-                <Selects
-                  usernames={usernames}
-                  value={username}
-                  change={setUsername}
-                />
-              )}
-            </InputGroup>
-            {/*    <Input
-                type="text"
-                placeholder="jane"
-                value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                required
-              />
-            </InputGroup> */}
+          <H2>Edit Post</H2>
+          <Cancel onClick={closeForm}>
+            <FaTimes />
+          </Cancel>
 
-            <InputGroup>
-              <Label for="">
-                Email:<Span>*</Span>
-              </Label>
-              <Input type="email" placeholder="jane@online.co" />
-            </InputGroup>
-          </FormRow>
-
-          <H2>Bank Details</H2>
           <FormRow>
             <InputGroup>
               <Label for="">
@@ -239,6 +243,7 @@ export default function PostForm({ account }) {
               </Label>
               <Input
                 type="text"
+                defaultValue={editAccount.bankname}
                 placeholder="Wells Fargo"
                 id="bankname"
                 {...register("bankname")}
@@ -260,7 +265,7 @@ export default function PostForm({ account }) {
             </InputGroup>
           </FormRow>
 
-          <H2>About Bond</H2>
+          <H3>About Bond</H3>
           <FormRow>
             <InputGroup>
               <Label for="">
@@ -270,6 +275,7 @@ export default function PostForm({ account }) {
                 type="date"
                 placeholder="mm/dd/yy"
                 id="startDate"
+                defaultValue={editAccount.startDate}
                 {...register("startDate")}
                 required
               />
@@ -282,6 +288,7 @@ export default function PostForm({ account }) {
               <Input
                 type="date"
                 placeholder="mm/dd/yy"
+                defaultValue={editAccount.maturityDate}
                 id="maturityDate"
                 {...register("maturityDate")}
                 required
@@ -297,6 +304,7 @@ export default function PostForm({ account }) {
               <Input
                 type="text"
                 id="bondNumber"
+                defaultValue={editAccount.bondNumber}
                 {...register("bondNumber")}
                 required
               />
@@ -310,6 +318,7 @@ export default function PostForm({ account }) {
                 type="number"
                 step="0.01"
                 id="investment"
+                defaultValue={editAccount.investment}
                 {...register("investment")}
                 required
               />
@@ -325,6 +334,7 @@ export default function PostForm({ account }) {
                 type="number"
                 step="0.01"
                 id="annualReturn"
+                defaultValue={editAccount.annualReturn}
                 {...register("annualReturn")}
                 required
               />
@@ -334,26 +344,24 @@ export default function PostForm({ account }) {
               <Label for="">
                 Bond Type:<Span>*</Span>
               </Label>
-              <Select id="bondType" {...register("bondType")}>
+              <Select
+                id="bondType"
+                defaultValue={editAccount.bondType}
+                {...register("bondType")}
+              >
                 <option value="fixed-term-deposit">Fixed Term Deposit</option>
                 <option value="bond">Bonds</option>
               </Select>
             </InputGroup>
           </FormRow>
-
-          <InputCheckbox>
-            <InputCheckboxes type="checkbox" required />
-            confirm that all details are correct
-          </InputCheckbox>
-
-          <InputGroup>
-            <Button disabled={isPosting}>
-              {isPosting ? "Submitting..." : "Submit"}
+          <Center>
+            <Button disabled={isEditing}>
+              {isEditing ? "Updating..." : "Update"}
             </Button>
-          </InputGroup>
+          </Center>
         </Form>
-      </Body>
-      <Footer />
+      </Modal>
+      <Overlay onClick={closeForm} />
     </>
   );
 }

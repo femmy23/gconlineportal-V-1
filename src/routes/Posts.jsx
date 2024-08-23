@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import PostForm from "../components/PostForm";
-import Spinner from "../components/Spinner";
+import Spinner from "../UI/Spinner";
 import { fetchProfile } from "../features/services/apiauth";
 import PageNotFound from "./PageNotFound";
 
