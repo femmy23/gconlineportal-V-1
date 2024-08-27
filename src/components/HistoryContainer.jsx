@@ -13,7 +13,6 @@ import Footer from "../UI/Footer";
 import Header from "../UI/Header";
 import MoveBack from "./MoveBack";
 import Selects from "../UI/Select";
-import Select from "../UI/Select";
 
 const Form = styled.form`
   background-color: #fff;
@@ -82,21 +81,6 @@ const Input = styled.input`
     background-color: #dff3ff;
   }
 `;
-// const Select = styled.select`
-//   display: block;
-//   background-color: #eee;
-//   border: 0.5px solid #ccc;
-//   width: 100%;
-//   outline: none;
-//   height: 2.85rem;
-//   border-radius: 5px;
-//   padding: 10px;
-//   font-size: 1rem;
-//   letter-spacing: 2px;
-//   &:focus {
-//     background-color: #dff3ff;
-//   }
-// `;
 const Button = styled.button`
   background-color: #5e5ef0;
   border-radius: 5px;
@@ -119,7 +103,7 @@ const Table = styled.table`
   text-align: center;
   border: 1px solid #ccc;
   padding: 0.5rem;
-  margin-top: 5rem;
+  margin: 3rem 0;
 `;
 const Tr = styled.tr`
   text-align: center;
@@ -164,6 +148,7 @@ const Edit = styled.button`
 `;
 const H2 = styled.h2`
   margin: 1rem;
+  text-align: center;
   color: #f17777;
 `;
 
@@ -236,6 +221,7 @@ export default function HistoryContainer() {
               ""
             ) : (
               <Selects
+                onChange={() => refetch()}
                 usernames={usernames}
                 value={username}
                 change={setUsername}
@@ -248,7 +234,7 @@ export default function HistoryContainer() {
 
       <Table>
         {!accounts?.length ? (
-          ""
+          <H2>no Accounts</H2>
         ) : (
           <Tr>
             <Th>Start Date</Th>

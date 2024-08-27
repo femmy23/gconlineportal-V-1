@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import Footer from "../UI/Footer";

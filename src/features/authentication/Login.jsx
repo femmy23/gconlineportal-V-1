@@ -168,7 +168,6 @@ export default function Login() {
             <Input
               type="email"
               id="email"
-              value="femmydigital@gmail.com"
               placeholder="dejzzy@info.uk"
               {...register("email")}
               required
@@ -185,7 +184,6 @@ export default function Login() {
             <Input
               type={passwordVisible ? "text" : "password"}
               id="password"
-              value="12121212"
               {...register("password")}
               placeholder="*******"
               required
