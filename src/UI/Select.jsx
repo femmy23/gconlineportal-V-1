@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 const StyledSelect = styled.select`
-  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
-
   display: block;
   background-color: #eee;
   border: 0.5px solid #ccc;
